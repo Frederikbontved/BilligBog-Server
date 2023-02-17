@@ -3,13 +3,14 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 
+const app = express();
+const PORT = process.env.PORT || 3333;
+
+// Connect to MongoDB
 mongoose.connect(process.env.DATABASE_URL);
 const db = mongoose.connection;
 db.on("error", (err) => console.error(err));
 db.once("open", () => console.log("Successfully connected to DB."));
-
-const app = express();
-const port = 3333;
 
 // Use JSON middleware
 app.use(express.json());
@@ -26,6 +27,4 @@ app.use("/scrape", scrapeRouter);
 app.use("/images", express.static("coverImages"));
 
 // Start the server
-app.listen(port, ["192.168.8.108", "localhost"], () =>
-  console.log("Its alive!")
-);
+app.listen(PORT, () => console.log(`It's alive on port ${PORT}`));
