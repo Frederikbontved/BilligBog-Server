@@ -7,10 +7,15 @@ const app = express();
 const PORT = process.env.PORT || 3333;
 
 // Connect to MongoDB
-mongoose.connect(process.env.DATABASE_URL);
-const db = mongoose.connection;
-db.on("error", (err) => console.error(err));
-db.once("open", () => console.log("Successfully connected to DB."));
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(process.env.MONGO_URI);
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+  } catch (error) {
+    console.log(error);
+    process.exit(1);
+  }
+};
 
 // Use JSON middleware
 app.use(express.json());
@@ -26,5 +31,9 @@ app.use("/scrape", scrapeRouter);
 // Function to serve images from the "coverImages" folder.
 app.use("/images", express.static("coverImages"));
 
-// Start the server
-app.listen(PORT, () => console.log(`It's alive on port ${PORT}`));
+//Connect to the database before listening
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log("listening for requests");
+  });
+});
