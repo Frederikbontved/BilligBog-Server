@@ -10,10 +10,10 @@ POST http://localhost:3333/books
 Content-Type: application/json
 
 {
-    "isbn": 123,
-    "title": "How Small Things Get Done",
-    "authors": ["Bente Sejldal"],
-    "imageURI": "https://imgcdn.saxo.com/_9788702364538"
+    "isbn": 9788702382068,
+    "title": "Jeg anerkender ikke længere jeres autoritet",
+    "authors": ["Glenn Bech"],
+    "imageURI": "https://imgcdn.saxo.com/_9788702382068"
 }
 
 ###
