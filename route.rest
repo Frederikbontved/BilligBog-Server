@@ -1,0 +1,31 @@
+GET http://localhost:3333/books
+
+###
+
+GET http://localhost:3333/books/63e907ad0b0c5172c221645a
+
+###
+
+POST http://localhost:3333/books
+Content-Type: application/json
+
+{
+    "isbn": 123,
+    "title": "How Small Things Get Done",
+    "authors": ["Bente Sejldal"],
+    "imageURI": "https://imgcdn.saxo.com/_9788702364538"
+}
+
+###
+DELETE http://localhost:3333/books/63ee6c5640f79275c532463e
+
+###
+PATCH http://localhost:3333/books/63e907ad0b0c5172c221645a
+Content-Type: application/json
+
+{
+    "hasCoverImg": true
+}
+
+###
+GET http://localhost:3333/scrape/978874126266
