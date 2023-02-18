@@ -4,7 +4,7 @@ const express = require("express");
 const router = express.Router();
 const fs = require("fs").promises;
 const Book = require("../models/book");
-const download = require("image-downloader");
+//const download = require("image-downloader");
 
 // Getting all
 router.get("/", async (req, res) => {
@@ -30,6 +30,7 @@ router.post("/", async (req, res) => {
   });
 
   try {
+    /*
     //If URI for image to downloader has been specified, download the cover image from the specified URI.
 
     // Need to make it so that img gets deleted again if DB fails.
@@ -44,6 +45,7 @@ router.post("/", async (req, res) => {
       // Set hasCoverImg to true in database.
       book.hasCoverImg = true;
     }
+    */
 
     // Add the book to the database
     const newBook = await book.save();

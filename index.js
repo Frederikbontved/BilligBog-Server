@@ -29,7 +29,7 @@ const scrapeRouter = require("./routes/scrape");
 app.use("/scrape", scrapeRouter);
 
 // Function to serve images from the "coverImages" folder.
-app.use("/images", express.static("coverImages"));
+// app.use("/images", express.static("coverImages"));
 
 //Connect to the database before listening
 connectDB().then(() => {
