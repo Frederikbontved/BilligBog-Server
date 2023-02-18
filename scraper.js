@@ -7,6 +7,9 @@ const scrapeSaxo = async (isbn) => {
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
   });
   const page = await browser.newPage();
+
+  await page.setDefaultNavigationTimeout(0);
+
   await page.goto("https://saxo.com");
   console.log("We are now on Saxo.");
 
