@@ -5,7 +5,6 @@ const scrapeSaxo = async (isbn) => {
   // Start new browser, go to Saxo.com
   const browser = await puppeteer.launch({
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
-    headless: false,
   });
   const page = await browser.newPage();
 
