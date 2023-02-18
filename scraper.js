@@ -8,13 +8,17 @@ const scrapeSaxo = async (isbn) => {
   });
   const page = await browser.newPage();
   await page.goto("https://saxo.com");
+  console.log("We are now on Saxo.");
 
   // Type ISBN into search field and submit form.
   await page.type("#new-search-query", isbn);
-  await Promise.all([
-    page.click("#search-menu > form > button"),
-    page.waitForNavigation(),
-  ]);
+  console.log("We have now typed into the search field.");
+
+  await page.click("#search-menu > form > button");
+  console.log("We have now clicked the button.");
+
+  await page.waitForNavigation();
+  console.log("we have now waited for navigation");
 
   // Define the bookInfo variables
   let title;
