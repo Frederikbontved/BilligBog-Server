@@ -3,7 +3,9 @@ const puppeteer = require("puppeteer");
 // Function for scraping Saxo.com
 const scrapeSaxo = async (isbn) => {
   // Start new browser, go to Saxo.com
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+  });
   const page = await browser.newPage();
   await page.goto("https://saxo.com");
 
