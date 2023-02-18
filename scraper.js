@@ -5,6 +5,7 @@ const scrapeSaxo = async (isbn) => {
   // Start new browser, go to Saxo.com
   const browser = await puppeteer.launch({
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    headless: false,
   });
   const page = await browser.newPage();
 
@@ -15,7 +16,7 @@ const scrapeSaxo = async (isbn) => {
   await page.type("#new-search-query", isbn);
   console.log("We have now typed into the search field.");
 
-  await page.click("#search-menu > form > button");
+  await page.click("#search-menu > form > button.icon-search");
   console.log("We have now clicked the button.");
 
   await page.waitForNavigation();
