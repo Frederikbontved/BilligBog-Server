@@ -87,6 +87,7 @@ router.delete("/:id", getBook, async (req, res) => {
   try {
     await res.book.remove();
 
+    /*
     if (res.book.hasCoverImg) {
       console.log("Book has a cover img.");
 
@@ -98,6 +99,7 @@ router.delete("/:id", getBook, async (req, res) => {
 
       console.log("Cover img has been removed.");
     }
+    */
 
     res.json({ message: "Removed book." });
   } catch (err) {
