@@ -10,17 +10,17 @@ const scrapeSaxo = async (isbn) => {
   const page = await browser.newPage();
 
   await page.goto("https://saxo.com");
-  console.log("We are now on Saxo.");
+  console.log(`${isbn}: We are now on Saxo.`);
 
   // Type ISBN into search field and submit form.
   await page.type("#new-search-query", isbn);
-  console.log("We have now typed into the search field.");
+  console.log(`${isbn}: We have now typed into the search field.`);
 
   await page.click("#search-menu > form > button.icon-search");
-  console.log("We have now clicked the button.");
+  console.log(`${isbn}: We have now clicked the button.`);
 
   await page.waitForNavigation();
-  console.log("we have now waited for navigation");
+  console.log(`${isbn}: We have now waited for navigation..`);
 
   // Define the bookInfo variables
   let title;
@@ -34,7 +34,7 @@ const scrapeSaxo = async (isbn) => {
       (el) => el.textContent
     );
   } catch (err) {
-    //console.error("Book title selector not found.");
+    console.error(`${isbn}: Book title selector was not found.`);
     return false;
   }
 
@@ -47,7 +47,7 @@ const scrapeSaxo = async (isbn) => {
       }
     );
   } catch (err) {
-    //console.error("Authors selector not found.");
+    console.error(`${isbn}: Authors selector not found.`);
     return false;
   }
 
@@ -58,12 +58,13 @@ const scrapeSaxo = async (isbn) => {
       (el) => el.src
     );
   } catch (err) {
-    //console.error("Book cover selector not found.");
+    console.error(`${isbn}: CoverImg selector not found.`);
     return false;
   }
 
   // Close browser.
   await browser.close();
+  console.log(`${isbn}: The browser is now closed again.`);
 
   // Return book object.
   const bookInfo = {
@@ -72,6 +73,7 @@ const scrapeSaxo = async (isbn) => {
     authors,
     coverImg,
   };
+
   return bookInfo;
 };
 

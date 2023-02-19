@@ -8,28 +8,32 @@ router.get("/:isbn", async (req, res) => {
   const isbn = req.params.isbn;
   let bookFound = false;
 
+  /*
   // First check local DB
   const localCheck = await getBookByIsbn(isbn);
 
   if (localCheck) {
-    console.log("Book found in local DB.");
+    console.log(`Success! Book with isbn ${isbn} was found in local DB.`);
     bookFound = true;
     return res.json(localCheck);
   }
+  */
 
-  console.log("Book was not found in local DB, now checking Saxo..");
+  console.log(
+    `Book with isbn ${isbn} was NOT found in local DB. Now checking Saxo...`
+  );
 
   // Then check Saxo.com
   const saxoCheck = await scrapeSaxo(isbn);
 
   if (saxoCheck) {
-    console.log("Book found on Saxo.");
+    console.log(`Success! Book with isbn ${isbn} was found on Saxo.`);
     bookFound = true;
     return res.json(saxoCheck);
   }
 
   if (!bookFound) {
-    console.log("This is a test!");
+    console.log(`Failure! Book isbn ${isbn} wasn't found anywhere.`);
     // If all other checks have failed, we now send this.
     return res.status(400).json({ message: "Book not found!" });
   }
