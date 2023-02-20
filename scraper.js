@@ -12,16 +12,31 @@ const scrapeSaxo = async (isbn) => {
   await page.goto("https://saxo.com");
   console.log(`${isbn}: We are now on Saxo.`);
 
-  // Type ISBN into search field and submit form.
+  // Type ISBN into search field.
   await page.type("#new-search-query", isbn);
   console.log(`${isbn}: We have now typed into the search field.`);
 
-  await Promise.all([
-    page.click("#search-menu > form > button.icon-search"),
-    page.waitForNavigation({ waitUntil: "domcontentloaded", timeout: 60000 }),
-  ]);
+  // Submit search form.
+  await page.$eval(".search-form", (form) => form.submit());
+  console.log(`${isbn}: We have now submitted the form.`);
 
-  console.log(`${isbn}: We have now waited for navigation..`);
+  await page.waitForNavigation();
+  console.log(`${isbn}: We have now waited for navigation.`);
+
+  /*
+  await page.click("#search-menu > form > button.icon-search");
+  console.log(`${isbn}: We have now clicked the search button.`);
+
+  try {
+    await page.waitForNavigation({
+      waitUntil: "domcontentloaded",
+      timeout: 30000,
+    });
+    console.log(`${isbn}: We have now waited for navigation..`);
+  } catch (err) {
+    console.error(err);
+  }
+  */
 
   // Define the bookInfo variables
   let title;
@@ -76,6 +91,7 @@ const scrapeSaxo = async (isbn) => {
   };
 
   return bookInfo;
+  console.log(bookInfo);
 };
 
 module.exports = { scrapeSaxo };
