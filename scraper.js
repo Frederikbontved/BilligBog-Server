@@ -17,8 +17,8 @@ const scrapeSaxo = async (isbn) => {
   console.log(`${isbn}: We have now typed into the search field.`);
 
   await Promise.all([
-    page.waitForNavigation(),
     page.click("#search-menu > form > button.icon-search"),
+    page.waitForNavigation({ waitUntil: "networkidle2" }),
   ]);
 
   console.log(`${isbn}: We have now waited for navigation..`);
