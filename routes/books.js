@@ -2,11 +2,13 @@ require("dotenv").config();
 
 const express = require("express");
 const router = express.Router();
-const fs = require("fs").promises;
 const Book = require("../models/book");
-//const download = require("image-downloader");
+const {
+  saveCoverImgFromUri,
+} = require("../utils/cover-images/saveCoverImgFromUri");
+const { deleteCoverImg } = require("../utils/cover-images/deleteCoverImg");
 
-// Getting all
+// Getting all books
 router.get("/", async (req, res) => {
   try {
     const books = await Book.find();
@@ -16,8 +18,8 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Getting one
-router.get("/:id", getBook, (req, res) => {
+// Getting one by ISBN.
+router.get("/:isbn", getBook, (req, res) => {
   res.json(res.book);
 });
 
@@ -29,38 +31,29 @@ router.post("/", async (req, res) => {
     authors: req.body.authors,
   });
 
+  //If URI for image to downloader has been specified, download the cover image from the specified URI.
+  if (req.body.imageURI) {
+    saveCoverImgFromUri(req.body.imageURI, req.body.isbn);
+
+    // Set hasCoverImg to true in database.
+    book.hasCoverImg = true;
+  }
+
   try {
-    /*
-    //If URI for image to downloader has been specified, download the cover image from the specified URI.
-
-    // Need to make it so that img gets deleted again if DB fails.
-    if (req.body.imageURI) {
-      options = {
-        url: req.body.imageURI,
-        dest: process.env.COVER_IMG_FOLDER + req.body.isbn + ".jpeg",
-      };
-
-      await download.image(options);
-
-      // Set hasCoverImg to true in database.
-      book.hasCoverImg = true;
-    }
-    */
-
     // Add the book to the database
     const newBook = await book.save();
 
     // Return successful status and the new book in database.
     res.status(201).json(newBook);
   } catch (err) {
+    // Need to delete the image if database post wasn't successfull.
     res.status(400).json({ message: err.message });
   }
 });
 
 // Updating one
-
 // Need to be able to update cover Img
-router.patch("/:id", getBook, async (req, res) => {
+router.patch("/:isbn", getBook, async (req, res) => {
   if (req.body.isbn != null) {
     res.book.isbn = req.body.isbn;
   }
@@ -69,9 +62,6 @@ router.patch("/:id", getBook, async (req, res) => {
   }
   if (req.body.authors != null) {
     res.book.authors = req.body.authors;
-  }
-  if (req.body.hasCoverImg != null) {
-    res.book.hasCoverImg = req.body.hasCoverImg;
   }
 
   try {
@@ -83,23 +73,15 @@ router.patch("/:id", getBook, async (req, res) => {
 });
 
 // Deleting one
-router.delete("/:id", getBook, async (req, res) => {
+router.delete("/:isbn", getBook, async (req, res) => {
   try {
+    // Delete book from database
     await res.book.remove();
 
-    /*
+    // Delete cover image from server
     if (res.book.hasCoverImg) {
-      console.log("Book has a cover img.");
-
-      const filepath = process.env.COVER_IMG_FOLDER + res.book.isbn + ".jpeg";
-
-      console.log(filepath);
-
-      await fs.unlink(filepath);
-
-      console.log("Cover img has been removed.");
+      deleteCoverImg(res.book.isbn);
     }
-    */
 
     res.json({ message: "Removed book." });
   } catch (err) {
@@ -110,7 +92,7 @@ router.delete("/:id", getBook, async (req, res) => {
 async function getBook(req, res, next) {
   let book;
   try {
-    book = await Book.findById(req.params.id);
+    book = await Book.findOne({ isbn: req.params.isbn });
 
     if (book == null) {
       return res.status(404).json({ message: "Cannot find book in database." });

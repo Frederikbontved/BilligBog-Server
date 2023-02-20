@@ -1,24 +1,23 @@
 const express = require("express");
 const router = express.Router();
 const Book = require("../models/book");
-const { scrapeSaxo } = require("../scraper");
-const { scrapeBibliotek } = require("../scrapers/scrapeBibliotek");
+const { scrapeSaxo } = require("../utils/scrapers/scrapeSaxo");
+const { scrapeBibliotek } = require("../utils/scrapers/scrapeBibliotek");
+const { getBook } = require("../utils/database/getBook");
 
 // Scraping the web for a book by ISBN.
 router.get("/:isbn", async (req, res) => {
   const isbn = req.params.isbn;
   let bookFound = false;
 
-  /*
   // First check local DB
-  const localCheck = await getBookByIsbn(isbn);
+  const localCheck = await getBook(isbn);
 
   if (localCheck) {
     console.log(`Success! Book with isbn ${isbn} was found in local DB.`);
     bookFound = true;
     return res.json(localCheck);
   }
-  */
 
   console.log(
     `Book with isbn ${isbn} was NOT found in local DB. Now scraping the web...`
@@ -41,20 +40,5 @@ router.get("/:isbn", async (req, res) => {
     return res.status(400).json({ message: "Book not found!" });
   }
 });
-
-async function getBookByIsbn(isbn) {
-  let book;
-  try {
-    book = await Book.findById(isbn);
-
-    if (book == null) {
-      return false;
-    }
-  } catch (err) {
-    return false;
-  }
-
-  return book;
-}
 
 module.exports = router;

@@ -23,21 +23,6 @@ const scrapeSaxo = async (isbn) => {
   await page.waitForNavigation();
   console.log(`${isbn}: We have now waited for navigation.`);
 
-  /*
-  await page.click("#search-menu > form > button.icon-search");
-  console.log(`${isbn}: We have now clicked the search button.`);
-
-  try {
-    await page.waitForNavigation({
-      waitUntil: "domcontentloaded",
-      timeout: 30000,
-    });
-    console.log(`${isbn}: We have now waited for navigation..`);
-  } catch (err) {
-    console.error(err);
-  }
-  */
-
   // Define the bookInfo variables
   let title;
   let authors;
@@ -91,7 +76,6 @@ const scrapeSaxo = async (isbn) => {
   };
 
   return bookInfo;
-  console.log(bookInfo);
 };
 
 module.exports = { scrapeSaxo };

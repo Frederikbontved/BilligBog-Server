@@ -1,12 +1,12 @@
-GET http://localhost:3333/books
+GET http://localhost:3000/books
 
 ###
 
-GET http://localhost:3333/books/63e907ad0b0c5172c221645a
+GET http://localhost:3000/books/63e907ad0b0c5172c221645a
 
 ###
 
-POST http://localhost:3333/books
+POST http://localhost:3000/books
 Content-Type: application/json
 
 {
@@ -17,10 +17,10 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:3333/books/63ee6c5640f79275c532463e
+DELETE http://localhost:3000/books/9788702382068
 
 ###
-PATCH http://localhost:3333/books/63e907ad0b0c5172c221645a
+PATCH http://localhost:3000/books/63e907ad0b0c5172c221645a
 Content-Type: application/json
 
 {
@@ -28,4 +28,4 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:3000/scrape/123
+GET http://localhost:3000/scrape/9788702382068
