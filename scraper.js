@@ -16,10 +16,11 @@ const scrapeSaxo = async (isbn) => {
   await page.type("#new-search-query", isbn);
   console.log(`${isbn}: We have now typed into the search field.`);
 
-  await page.click("#search-menu > form > button.icon-search");
-  console.log(`${isbn}: We have now clicked the button.`);
+  await Promise.all([
+    page.waitForNavigation(),
+    page.click("#search-menu > form > button.icon-search"),
+  ]);
 
-  await page.waitForNavigation();
   console.log(`${isbn}: We have now waited for navigation..`);
 
   // Define the bookInfo variables
