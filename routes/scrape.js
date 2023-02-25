@@ -16,7 +16,9 @@ router.get("/:isbn", async (req, res) => {
   if (localCheck) {
     console.log(`Success! Book with isbn ${isbn} was found in local DB.`);
     bookFound = true;
-    return res.json(localCheck);
+    const responseJson = localCheck.toJSON();
+    responseJson.coverImg = `http://134.122.92.30/images/${isbn}.jpeg`;
+    return res.json(responseJson);
   }
 
   console.log(
