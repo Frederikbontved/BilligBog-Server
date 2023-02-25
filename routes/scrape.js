@@ -22,7 +22,20 @@ router.get("/:isbn", async (req, res) => {
   }
 
   console.log(
-    `Book with isbn ${isbn} was NOT found in local DB. Now scraping the web...`
+    `Book with isbn ${isbn} was NOT found in local DB. Now scraping Bibliotek.dk...`
+  );
+
+  // Then check bibliotek.dk
+  const bibliotekCheck = await scrapeBibliotek(isbn);
+
+  if (bibliotekCheck) {
+    console.log(`Success! Book with isbn ${isbn} was found on Bibliotek.dk.`);
+    bookFound = true;
+    return res.json(bibliotekCheck);
+  }
+
+  console.log(
+    `Book with isbn ${isbn} was NOT found on Bibliotek.dk. Now scraping Saxo...`
   );
 
   // Then check Saxo.com
@@ -33,8 +46,6 @@ router.get("/:isbn", async (req, res) => {
     bookFound = true;
     return res.json(saxoCheck);
   }
-
-  //await scrapeBibliotek(isbn);
 
   if (!bookFound) {
     console.log(`Failure! Book isbn ${isbn} wasn't found anywhere.`);
