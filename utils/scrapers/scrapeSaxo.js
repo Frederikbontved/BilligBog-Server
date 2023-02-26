@@ -35,7 +35,7 @@ const scrapeSaxo = async (isbn) => {
       (el) => el.textContent
     );
   } catch (err) {
-    console.error(`${isbn}: Book title selector was not found.`);
+    console.error(err);
     return false;
   }
 
@@ -44,11 +44,11 @@ const scrapeSaxo = async (isbn) => {
     authors = await page.$$eval(
       "#product-info > div > div.product-page-heading > h2 > ul > li",
       (authors) => {
-        return authors.map((x) => x.textContent);
+        return authors.map((x) => x.textContent.replace(/[,&]+/g, "").trim());
       }
     );
   } catch (err) {
-    console.error(`${isbn}: Authors selector not found.`);
+    console.error(err);
     return false;
   }
 
@@ -59,7 +59,7 @@ const scrapeSaxo = async (isbn) => {
       (el) => el.src
     );
   } catch (err) {
-    console.error(`${isbn}: CoverImg selector not found.`);
+    console.error(err);
     return false;
   }
 

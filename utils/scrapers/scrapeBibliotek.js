@@ -84,7 +84,7 @@ const scrapeBibliotek = async (isbn) => {
         .map((i, el) => $(el).text())
         .get();
     }
-    console.log(`Title: ${authors}`);
+    console.log(`Authors: ${authors}`);
   } catch (err) {
     console.error(err);
     return false;
@@ -94,8 +94,6 @@ const scrapeBibliotek = async (isbn) => {
     // Grab the cover image url.
     coverImg = $(".bibdk-cover > a > img").attr("src");
 
-    console.log(`Title: ${coverImg}`);
-
     // Grab the large version instead of medium version of image.
     coverImg = coverImg.replace("/medium/", "/large/");
 
@@ -104,6 +102,8 @@ const scrapeBibliotek = async (isbn) => {
 
     // concatenate the first part and ".jpg" to get the new string
     coverImg = coverImg[0] + ".jpg";
+
+    console.log(`CoverImg: ${coverImg}`);
   } catch (err) {
     console.error(err);
     return false;
