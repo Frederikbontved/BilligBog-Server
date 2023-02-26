@@ -93,6 +93,12 @@ const scrapeBibliotek = async (isbn) => {
 
     // Grab the large version instead of medium version of image.
     coverImg = coverImg.replace("/medium/", "/large/");
+
+    // Split the string at ".jpg"
+    coverImg = coverImg.split(".jpg");
+
+    // concatenate the first part and ".jpg" to get the new string
+    coverImg = coverImg[0] + ".jpg";
   } catch (err) {
     console.error(err);
     return false;
